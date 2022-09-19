@@ -1,0 +1,45 @@
+
+## Instalacion de Kube-master
+
+wget https://github.com/k0sproject/k0s/releases/download/v0.9.1/k0s-v0.9.1-amd64
+mv k0s-v0.9.1-amd64 /usr/local/bin/k0s
+chmod +x /usr/local/bin/k0s
+k0s default-config > k0s.yaml
+k0s server -c k0s.yaml
+
+## Para dejarlo levantado.
+systemctl enable k0s
+systemctl start k0s
+
+# Generar token en master
+
+k0s token create --role=worker
+
+## Worker
+
+#!/bin/bash
+
+echo "H4sIAAAAAAAC/2xV3Y6jPBK976fIC/R8GEjvJNJeLMFOQhqnbSgbfAeYbgLmpwmdH1b77qvOzEi70ndXrnN0jlUq1XnKhpMox/Op79aLC3oqzNd5Ksfz+ul58btePy0Wi8W5HC/luF5U0zSc13/9hVb2D/Ty8wf6gSy0fnFd50ErynE6vZ+KbCqfs6+p6sfTdH/W2ZStF6+RNb1GaMNBB/HJ87kIIAIVMIsAf2DWtGlQEAH3OKY+k2JQFnEiCDxlGSEJZdkWIeWrIE8GRX3KwZ5ahSpXJ+RLQ29pi3MJw2uOhiDbqTpuCOdwPTBDPG1pzIWmzJAdi4ngQNwYllWI1CBNddBiSKG91WVMPqXgngLlhDtDBSYvMXBVAsIs9ijHQcW74lp+DH8w/r9YDEFXYvXJhNgoaylZQ6jAPNE+UblQy7RFMiRDGidchY1wlK1JBsgLsfbBIbuNoUFaUwwgNkwQwQBbEQRYW+TBjSxy+Z4JQDjqLqgltu4lnnyO+uvhvnrNG3dmTW+XO8+Lan0I/QpHXXooiBipob2S4o1C5WezaKERwRFW0ZH8667b80XPtKJJ1UU+HSI/UBEYB7phG29vywx0kuHp8whVVCDKSyneiuuQZFifwV4OmRApBTKJRFw50E40waR3nk+dKlWWdS3sIEptdolBXbOdR8N2+VU0QwQ1reVWfx7JMOqWf0YNijed+QSL2nQWc2Yt97mjthEyNHOwfcQmioTeF9ZqjlvVhjsqqaQts9QrJN4Ub1auiPcum0XL7lPPjEIZGWxV4wPraFwCGYqtYRkQtzTqFgmdpQ09yE5vwyZ0ImfY05ry2IG7MtjmW/oS4ukt86uvqJmS2B6cUK6WCpHqSJSdfwx9LD5uUPM7E+IaSyFkUrVZ24whVGlxOt/iNgAmq7nsxFkY+gUSLYUJIJfFrFt8ibZVyqSmrCEetweeNYG3aZBHsfZCIRq+04SdVg6A8LRlNqwdPMBBFxu1hwZtmExdDgEw4B7AxyWG/ZVb+CYkxwqRhDVBrLfIpT4cQkdPhRGYt4WdNpMXIu8t94VDCTUCkyNr9VjIasygWOrZ+97BmTfEiy3qfftnklpHH25pq0ducZyLyqTXfs4c2kNLZL4ldimrINviKySGF1Al0Kh7ZASliTZH4Elqu0sFwwuTJIp3YEdJgTKpdrxtkDQDTSWSuR/Mm/Z2o0kgjjAFdBZtau3vxa7acF9w2KlRmY85itVnbik3Q7wJjYeoSS8FrKA0elIw4diIc9SuDG9gznFFdOseQqTHtDZu3KlWSRdpnDrRZgW8dW9hRw8hYrNOeJRt9cRqUyt79Va0wVzYiB4sZYcNuhVzgdSu2lN/bzFDe/kxoLw2SW4/ZjVFLbKKmo1a3nrZ6BvUwk5bXitLfIYQXEupX4QxbTTrc16bPe+qzxJXnRTkEsplDTaRasvfNg2pKdECBG+YbTYR4KU0eicb5qaNmThUL4X/4crdEKq6sApfhNoSx9xoL7VvVJIh4dvbpQBzCTerPofrkls/D7ITnnB09xZbh9+3mcQN+2CWiAQ22wioJzA87vIr6//5tFh0WVuuF411fir6bipv06+g+FX/Coo/qfFgfTe+zo/XV16acnrO+346T2M2/L/a1ziW3fT8R+nRbE6dXi82ffd++ngaxvK9HMuuKM/rxb//8/St+jD/LfI38g/jxxemvim79aK9zuU9/7Fq/+H2+en9Xk7vy2E8Pf03AAD//9DjiPYFBwAA" > /root/worker.token
+
+wget https://github.com/k0sproject/k0s/releases/download/v0.9.1/k0s-v0.9.1-amd64  -O /usr/local/bin/k0s
+chmod +x /usr/local/bin/k0s
+k0s install --role worker
+sed -i 's/REPLACEME/\/root\/worker\.token/g' /etc/systemd/system/k0s.service
+systemctl daemon-reload
+systemctl enable k0s
+systemctl start k0s
+
+
+  82  k0s token create --role=worker
+   83  clear
+   84  snap install kubctl --classic
+   85  snap install kubectl --classic
+   86  kubectl get nodes
+   87  clusterUser=fferreira
+   88  mkdir .kube
+   89  k0s kubeconfig create --groups "system:masters" $clusterUser > .kube/config
+   90  kubectl get nodes
+   91  get pods --alnamespaces
+   92  get pods --alname-spaces
+   93  get pods --all-namespaces
+   94  kubectl get pods --all-namespaces
